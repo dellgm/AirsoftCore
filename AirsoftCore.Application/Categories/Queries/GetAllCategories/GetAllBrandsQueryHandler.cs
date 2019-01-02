@@ -23,7 +23,7 @@ namespace AirsoftCore.Application.Categories.Queries.GetAllCategories
 
         public async Task<BrandsListViewModel> Handle(GetAllBrandsQuery request, CancellationToken cancellationToken)
         {
-            // TODO: Set view model state based on user permissions.
+            // TODO: Set view model state based on user permissions.//
             var brands = await _context.Brands.OrderBy(p => p.Descr).ToListAsync(cancellationToken);
 
             var model = new BrandsListViewModel
