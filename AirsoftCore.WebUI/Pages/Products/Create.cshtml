@@ -1,0 +1,178 @@
+﻿@page
+@model AirsoftCore.WebUI.Pages.Products.CreateModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<h1>Create</h1>
+<hr />
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+
+            <div class="" style="padding-top:20px">
+                <h4>Add New Product</h4>
+                <hr />
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Product.Descr" class="control-label"></label>
+                            <input asp-for="Product.Descr" class="form-control" />
+                            <span asp-validation-for="Product.Descr" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Product.Model" class="control-label"></label>
+                            <input asp-for="Product.Model" class="form-control" />
+                            <span asp-validation-for="Product.Model" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Product.Price" class="control-label"></label>
+                            <input asp-for="Product.Price" class="form-control" />
+                            <span asp-validation-for="Product.Price" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Product.Stock" class="control-label"></label>
+                            <input asp-for="Product.Stock" class="form-control" />
+                            <span asp-validation-for="Product.Stock" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-file">
+                                <label asp-for="Product.Image" class="custom-file-label " for="inputGroupFile02">Choose file</label>
+                                <input asp-for="Product.Image" type="file" class="custom-file-input" id="inputGroupFile02" />
+                                <span asp-validation-for="Product.Image" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-outline-primary">Create</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" name="customRadioInline1" id="customRadioInline1" checked="checked" />
+                                <label class="custom-control-label " for="customRadioInline1">Existing</label>
+                            </div>
+                            <div class="">
+                                <select asp-for="Product.BrandId" class="form-control"
+                                        asp-items="@Model.BrandSelectList">
+                                    <option value="">-- Select Brand --</option>
+                                </select>
+                                <span asp-validation-for="Product.BrandId" class="text-danger" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" name="customRadioInline2" id="customRadioInline2" checked="checked" />
+                                <label class="custom-control-label " for="customRadioInline2">Existing</label>
+                            </div>
+                            <div class="">
+                                <select asp-for="Product.ProductTypeId" class="form-control"
+                                        asp-items="@Model.BrandSelectList">
+                                    <option value="">-- Select Type --</option>
+                                </select>
+                                <span asp-validation-for="Product.ProductTypeId" class="text-danger" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" name="customRadioInline3" id="customRadioInline3" checked="checked" />
+                                <label class="custom-control-label " for="customRadioInline3">Existing</label>
+                            </div>
+                            <div class="">
+                                <select asp-for="Product.ProductGroupId" class="form-control"
+                                        asp-items="@Model.BrandSelectList">
+                                    <option value="">-- Select Type --</option>
+                                </select>
+                                <span asp-validation-for="Product.ProductGroupId" class="text-danger" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" name="customRadioInline1" id="customRadioInline11" />
+                                <label class="custom-control-label " for="customRadioInline11">Existing</label>
+                            </div>
+                            <div class="">
+                                <select asp-for="Product.BrandId" class="form-control"
+                                        asp-items="@Model.BrandSelectList">
+                                    <option value="">-- Select Brand --</option>
+                                </select>
+                                <span asp-validation-for="Product.BrandId" class="text-danger" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" name="customRadioInline2" id="customRadioInline12" />
+                                <label class="custom-control-label " for="customRadioInline12">Existing</label>
+                            </div>
+                            <div class="">
+                                <select asp-for="Product.ProductTypeId" class="form-control"
+                                        asp-items="@Model.BrandSelectList">
+                                    <option value="">-- Select Type --</option>
+                                </select>
+                                <span asp-validation-for="Product.ProductTypeId" class="text-danger" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" name="customRadioInline3" id="customRadioInline13" />
+                                <label class="custom-control-label " for="customRadioInline13">Existing</label>
+                            </div>
+                            <div class="">
+                                <select asp-for="Product.ProductGroupId" class="form-control"
+                                        asp-items="@Model.BrandSelectList">
+                                    <option value="">-- Select Type --</option>
+                                </select>
+                                <span asp-validation-for="Product.ProductGroupId" class="text-danger" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*<div class="form-group">
+                    <label asp-for="Product.Descr" class="control-label"></label>
+                    <input asp-for="Product.Descr" class="form-control" />
+                    <span asp-validation-for="Product.Descr" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Product.Model" class="control-label"></label>
+                    <input asp-for="Product.Model" class="form-control" />
+                    <span asp-validation-for="Product.Model" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Product.BrandId" class="control-label"></label>
+                    <select asp-for="Product.BrandId" class="form-control"
+                            asp-items="@Model.CategorySelectList">
+                        <option value="">-- Select Department --</option>
+                    </select>
+                    <span asp-validation-for="Product.BrandId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Product.ProductGroupId" class="control-label"></label>
+                    <input asp-for="Product.ProductGroupId" class="form-control" />
+                    <span asp-validation-for="Product.ProductGroupId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Product.ProductTypeId" class="control-label"></label>
+                    <input asp-for="Product.ProductTypeId" class="form-control" />
+                    <span asp-validation-for="Product.ProductTypeId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Product.Price" class="control-label"></label>
+                    <input asp-for="Product.Price" class="form-control" />
+                    <span asp-validation-for="Product.Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Product.Stock" class="control-label"></label>
+                    <input asp-for="Product.Stock" class="form-control" />
+                    <span asp-validation-for="Product.Stock" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-outline-primary">Create</button>
+                </div>*@
+        </form>
+    </div>
+</div>
+

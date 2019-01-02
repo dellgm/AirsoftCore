@@ -1,0 +1,14 @@
+﻿<script src="~/lib/easymde/dist/easymde.min.js"></script>
+<script>
+    var openFile = function (event) {
+        const input = event.target;
+        const reader = new FileReader();
+        reader.onload = function () {
+            let text = easymde.value();
+            text += `\n${reader.result}`;
+            easymde.value(text);
+        };
+        reader.readAsText(input.files[0]);
+    };
+</script>
+<partial name="_ValidationScriptsPartial" />
