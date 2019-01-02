@@ -23,6 +23,7 @@ namespace AirsoftCore.Application.Categories.Queries.GetAllCategories
 
         public async Task<BrandsListViewModel> Handle(GetAllBrandsQuery request, CancellationToken cancellationToken)
         {
+            //Feat
             //Opa
             //TestBranch
             // TODO: Set view model state based on user permissions.//
