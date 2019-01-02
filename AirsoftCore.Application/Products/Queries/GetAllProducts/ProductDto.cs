@@ -18,6 +18,10 @@
 
         public string BrandDescr { get; set; }
 
+        public int BrandId { get; set; }
+
+        public int ProductTypeId { get; set; }
+
         public byte[] Image { get; set; }
 
         //public void CreateMappings(Profile configuration)

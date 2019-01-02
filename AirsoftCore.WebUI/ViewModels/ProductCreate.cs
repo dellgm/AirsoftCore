@@ -11,6 +11,7 @@ namespace AirsoftCore.WebUI.ViewModels
         [Required]
         public string Model { get; set; }
 
+        [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
         public short Stock { get; set; }
@@ -21,6 +22,7 @@ namespace AirsoftCore.WebUI.ViewModels
 
         public int BrandId { get; set; }
 
+        [DataType(DataType.Upload)]
         public IFormFile Image { get; set; }
     }
 }

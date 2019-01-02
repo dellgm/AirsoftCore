@@ -2,16 +2,12 @@
 @model AirsoftCore.WebUI.Pages.Products.CreateModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<h1>Create</h1>
-<hr />
-<br />
-
 <div class="row">
     <div class="col-md-12">
         <form method="post" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
 
-            <div class="" style="padding-top:20px">
+            <div class="">
                 <h4>Add New Product</h4>
                 <hr />
                 <div class="row">
@@ -43,11 +39,8 @@
                                 <span asp-validation-for="Product.Image" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-outline-primary">Create</button>
-                        </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4" style="padding-top: 7px;">
                         <div class="form-group">
                             <div class="custom-control custom-radio">
                                 <input class="custom-control-input" type="radio" name="customRadioInline1" id="customRadioInline1" checked="checked" />
@@ -88,7 +81,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4" style="padding-top: 7px;">
                         <div class="form-group">
                             <div class="custom-control custom-radio">
                                 <input class="custom-control-input" type="radio" name="customRadioInline1" id="customRadioInline11" />
@@ -129,6 +122,9 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" style="float: right" class="btn btn-outline-primary">Create</button>
                 </div>
             </div>
             @*<div class="form-group">

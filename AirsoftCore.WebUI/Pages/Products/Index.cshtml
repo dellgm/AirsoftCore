@@ -10,37 +10,141 @@
 
 <h2>List of Products</h2>
 
-<a asp-page="./Create">Create New Product</a>
-<hr />
+<a asp-page="./Create">Add New Product</a>
+
 <form method="get">
+    <div class="form-row" style="padding-top:20px">
+        <div class="col-lg-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li class="breadcrumb-item active" aria-current="page">Parts</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
 
-    @foreach (var row in Model.Products.Products.ToArray().Split(4))
-    {
-        <div class="row">
-            @foreach (var product in row)
-            {
+    <div class="form-row">
+        <div class="col-lg-2">
+            <div class="form-row">
+                <div class="col-md-12">
 
-                var base64 = Convert.ToBase64String(product.Image);
-                var imgSrc = $"data:image/jpg;base64,{base64}";
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="card" style="margin-bottom: 10px; height:344px">
-                        <img height="150" width="100" class="card-img-top" src="@imgSrc" alt="Card image cap">
-                        <div class="card-body">
-                            <div class="card-title" style="text-align: center">
-                                @Html.ActionLink(product.Descr, "Details", new { id = product.ProductId })
+                    <div id="accordion">
+                        <input type="text" class="form-control" name="filter.Search" placeholder="Search..." style="margin-bottom: 15px" />
+                        <div class="card">
+                            <div class="card-header bg-dark">
+                                <a class="card-link" data-toggle="collapse" href="#collapse1" style="color: rgba(255, 255, 255, 0.5)">
+                                    Type
+                                </a>
                             </div>
-                            <div class="card-text" style="text-align: center">
-                                <h4>@product.Price €</h4>
+                            <div id="collapse1" class="collapse show" data-parent="#collapse1">
+                                <div class="card-body">
+                                    @foreach (var type in Model.ProductTypes)
+                                    {
+                                        if (Convert.ToInt32(type.Value) > 0)
+                                        {
+                                            <div class="custom-control custom-radio ">
+                                                <input type="radio" checked="@type.Selected" class="custom-control-input" name="filter.Types" id="T<%=@type.Value%" value="@type.Value">
+                                                <label class="custom-control-label" for="T<%=@type.Value%">@type.Text</label>
+                                            </div>
+                                        }
+                                    }
+                                </div>
                             </div>
                         </div>
-                        <div class="card-footer">
-                            @Html.ActionLink("Add to cart", "AddToCart", "ShoppingCart", new { id = product.ProductId }, htmlAttributes: new { @class = "btn btn-sm btn-block text-uppercase", @style = "color: white; background-color: #007bff", @id = "btnAddToCart" })
+                        <div class="card">
+                            <div class="card-header bg-dark">
+                                <a class="card-link" data-toggle="collapse" href="#collapse2" style="color: rgba(255, 255, 255, 0.5)">
+                                    Brand
+                                </a>
+                            </div>
+                            <div id="collapse2" class="show" data-parent="#collapse2">
+                                <div class="card-body">
+                                    @foreach (var brand in Model.Brands)
+                                    {
+                                        if (Convert.ToInt32(brand.Value) > 0)
+                                        {
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" checked="@brand.Selected" class="custom-control-input" name="filter.Brands" id="F<%=@brand.Value%" value="@brand.Value">
+                                                <label class="custom-control-label" for="F<%=@brand.Value%">@brand.Text</label>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="form-row" style="padding-bottom: 10px">
+                <div class="col-12">
+
+                    <button value="search" class="btn btn-info btn-block">Search</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-10">
+            <div class="form-row">
+                <div class="col-md-12">
+                    <h5>Product category</h5>
+                    <hr />
+
+                    <div class="container">
+                        <div class="form-group row">
+                            <div class="col-md-2">
+                                <label for="filter.ShowOnly">Show</label>
+                            </div>
+                            <div class="col-md-2">
+
+                                @Html.DropDownList("filter.ShowOnly", new SelectList(Model.ShowOnly, "Value", "Text"), new { @class = "custom-select custom-select-sm", @id = "colFormLabelSm" })
+                            </div>
+
+                        </div>
+                    </div>
+                    <hr />
+                    @if (!Model.Products.Products.Any())
+                    {
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            <strong>Nothing was found!</strong> You should check in on some of those filter fields on the left.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+            @foreach (var row in Model.Products.Products.ToArray().Split(4))
+            {
+                <div class="row">
+                    @foreach (var product in row)
+                    {
+
+                        var base64 = Convert.ToBase64String(product.Image);
+                        var imgSrc = $"data:image/jpg;base64,{base64}";
+
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card" style="margin-bottom: 10px; height:344px">
+                                <img height="150" width="100" class="card-img-top" src="@imgSrc" alt="Card image cap">
+                                <div class="card-body">
+                                    <div class="card-title" style="text-align: center">
+                                        @Html.ActionLink(product.Descr, "Details", new { id = product.ProductId })
+
+
+                                    </div>
+                                    <div class="card-text" style="text-align: center">
+                                        <h4>@product.Price €</h4>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    @Html.ActionLink("Add to cart", "AddToCart", "ShoppingCart", new { id = product.ProductId }, htmlAttributes: new { @class = "btn btn-sm btn-block text-uppercase", @style = "color: white; background-color: grey", @id = "btnAddToCart" })
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
             }
         </div>
-    }
+    </div>
 </form>
 
