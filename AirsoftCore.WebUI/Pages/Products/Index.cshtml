@@ -3,6 +3,10 @@
 @model AirsoftCore.WebUI.Pages.Products.IndexModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using AirsoftCore.WebUI.Extensions
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Common;
+
 @{
 
     ViewData["Title"] = "Index";
@@ -10,14 +14,12 @@
 
 <h2>List of Products</h2>
 
-<a asp-page="./Create">Add New Product</a>
-
 <form method="get">
     <div class="form-row" style="padding-top:20px">
         <div class="col-lg-12">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li class="breadcrumb-item">Home</li>
                     <li class="breadcrumb-item active" aria-current="page">Parts</li>
                 </ol>
             </nav>
@@ -28,7 +30,6 @@
         <div class="col-lg-2">
             <div class="form-row">
                 <div class="col-md-12">
-
                     <div id="accordion">
                         <input type="text" class="form-control" name="filter.Search" placeholder="Search..." style="margin-bottom: 15px" />
                         <div class="card">
@@ -89,21 +90,19 @@
                 <div class="col-md-12">
                     <h5>Product category</h5>
                     <hr />
-
                     <div class="container">
                         <div class="form-group row">
                             <div class="col-md-2">
                                 <label for="filter.ShowOnly">Show</label>
                             </div>
                             <div class="col-md-2">
-
                                 @Html.DropDownList("filter.ShowOnly", new SelectList(Model.ShowOnly, "Value", "Text"), new { @class = "custom-select custom-select-sm", @id = "colFormLabelSm" })
                             </div>
 
                         </div>
                     </div>
                     <hr />
-                    @if (!Model.Products.Products.Any())
+                    @if (!Model.ProductsViewModel.Products.Any())
                     {
                         <div class="alert alert-info alert-dismissible fade show" role="alert">
                             <strong>Nothing was found!</strong> You should check in on some of those filter fields on the left.
@@ -114,7 +113,7 @@
                     }
                 </div>
             </div>
-            @foreach (var row in Model.Products.Products.ToArray().Split(4))
+            @foreach (var row in Model.ProductsViewModel.Products.ToArray().Split(4))
             {
                 <div class="row">
                     @foreach (var product in row)
@@ -128,16 +127,14 @@
                                 <img height="150" width="100" class="card-img-top" src="@imgSrc" alt="Card image cap">
                                 <div class="card-body">
                                     <div class="card-title" style="text-align: center">
-                                        @Html.ActionLink(product.Descr, "Details", new { id = product.ProductId })
-
-
+                                        <a class="" asp-area="" asp-page="/Products/Details">@product.Descr</a>
                                     </div>
                                     <div class="card-text" style="text-align: center">
                                         <h4>@product.Price €</h4>
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    @Html.ActionLink("Add to cart", "AddToCart", "ShoppingCart", new { id = product.ProductId }, htmlAttributes: new { @class = "btn btn-sm btn-block text-uppercase", @style = "color: white; background-color: grey", @id = "btnAddToCart" })
+                                    <a class="btn btn-sm btn-block btn-outline-dark text-uppercase" asp-area="" asp-page="/Products/Index">Add to cart</a>
                                 </div>
                             </div>
                         </div>
@@ -146,5 +143,13 @@
             }
         </div>
     </div>
+
+    @Html.PagedListPager((IPagedList)Model.ProductsViewModel.Products, page => Url.Action("Index", new {id = page }),
+    new PagedListRenderOptions
+    {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }
+    })
+
 </form>
 
