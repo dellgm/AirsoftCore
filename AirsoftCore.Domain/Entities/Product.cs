@@ -13,6 +13,9 @@ namespace AirsoftCore.Domain.Entities
         public int ProductGroupId { get; set; }
         public int ProductTypeId { get; set; }
         public int BrandId { get; set; }
+        public virtual ProductGroup ProductGroup { get; set; }
+        public virtual ProductType ProductType { get; set; }
+        public virtual Brand Brand { get; set; }
         public string Descr { get; set; }
         public string Model { get; set; }
         public decimal Price { get; set; }

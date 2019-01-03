@@ -1,4 +1,6 @@
 ﻿using AirsoftCore.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -7,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AirsoftCore.Persistence
 {
-    public class AirsoftDbContext : DbContext
+    public class AirsoftDbContext : IdentityDbContext<IdentityUser>
     {
         public AirsoftDbContext(DbContextOptions<AirsoftDbContext> options) : base(options)
         {
@@ -23,6 +25,7 @@ namespace AirsoftCore.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AirsoftDbContext).Assembly);
         }
 

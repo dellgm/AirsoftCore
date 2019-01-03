@@ -1,7 +1,10 @@
 ﻿using AirsoftCore.Application.Categories.Queries.GetAllCategories;
 using AirsoftCore.Application.Products.Queries.GetAllProducts;
+using AirsoftCore.Application.ShoppingCarts.Commands.AddItemToCart;
 using AirsoftCore.WebUI.Filters;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -16,6 +19,7 @@ namespace AirsoftCore.WebUI.Pages.Products
     public class IndexModel : PageModel
     {
         private readonly IMediator _mediator;
+        public const string CartSessionKey = "CartId";
 
         public IndexModel(IMediator mediator)
         {
@@ -43,6 +47,24 @@ namespace AirsoftCore.WebUI.Pages.Products
                 ShowOnly = filter.ShowOnly,
                 Search = filter.Search
             });
+        }
+
+        public async Task<IActionResult> OnGetAddToCartAsync(int id)
+        {
+            var result = await _mediator.Send(new AddItemToCartCommand { CartId = GetCartId(), ProductId = id });
+
+            return RedirectToPage("/ShoppingCart/Index");
+        }
+
+        public string GetCartId()
+        {
+            if (HttpContext.Session.GetString(CartSessionKey) == null)
+            {
+                var tempCartId = Guid.NewGuid();
+                HttpContext.Session.SetString(CartSessionKey, tempCartId.ToString());
+            }
+
+            return HttpContext.Session.GetString(CartSessionKey);
         }
 
         private async Task<IEnumerable<SelectListItem>> GetProductGroup()

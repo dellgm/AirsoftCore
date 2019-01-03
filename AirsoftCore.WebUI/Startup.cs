@@ -1,6 +1,5 @@
-using AirsoftCore.Application.Products.Queries.GetAllProducts;
+using AirsoftCore.Application.Infrastructure.AutoMapper;
 using AirsoftCore.Common;
-using AirsoftCore.Domain.Entities;
 using AirsoftCore.Infrastructure;
 using AirsoftCore.Persistence;
 using AutoMapper;
@@ -8,10 +7,14 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Reflection;
 
 namespace AirsoftCore.WebUI
 {
@@ -27,15 +30,7 @@ namespace AirsoftCore.WebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper();
-
-            var mapper = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<Product, ProductDto>();
-
-            }).CreateMapper();
-
-            services.AddSingleton(mapper);
+            services.AddAutoMapper(new Assembly[] { typeof(AutoMapperProfile).GetTypeInfo().Assembly });
 
             services.AddMediatR();
 
@@ -51,8 +46,30 @@ namespace AirsoftCore.WebUI
             // Add DbContext using SQL Server Provider
             services.AddDbContext<AirsoftDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("AirsoftCoreDatabase")));
+            services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultUI(UIFramework.Bootstrap4)
+            // services.AddDefaultIdentity<IdentityUser>()
+            .AddEntityFrameworkStores<AirsoftDbContext>()
+            .AddDefaultTokenProviders();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(1);
+            });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                        .AddRazorPagesOptions(options =>
+                        {
+                            options.AllowAreas = true;
+                            options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+                            options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
+                        });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Identity/Account/Login";
+                options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,7 +89,8 @@ namespace AirsoftCore.WebUI
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.UseAuthentication();
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

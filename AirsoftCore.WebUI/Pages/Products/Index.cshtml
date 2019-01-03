@@ -81,7 +81,7 @@
             <div class="form-row" style="padding-bottom: 10px">
                 <div class="col-12">
 
-                    <button value="search" class="btn btn-info btn-block">Search</button>
+                    <button value="search" class="btn btn-dark btn-block">Search</button>
                 </div>
             </div>
         </div>
@@ -134,7 +134,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <a class="btn btn-sm btn-block btn-outline-dark text-uppercase" asp-area="" asp-page="/Products/Index">Add to cart</a>
+                                    <a class="" asp-area="" asp-page-handler="AddToCart" asp-route-id="@product.ProductId">@product.Descr</a>
                                 </div>
                             </div>
                         </div>

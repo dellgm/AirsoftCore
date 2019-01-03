@@ -1,6 +1,10 @@
-﻿namespace AirsoftCore.Application.Products.Queries.GetAllProducts
+﻿using AirsoftCore.Application.Interface.Mapping;
+using AirsoftCore.Domain.Entities;
+using AutoMapper;
+
+namespace AirsoftCore.Application.Products.Queries.GetAllProducts
 {
-    public class ProductDto
+    public class ProductDto : IHaveCustomMapping
     {
         public int ProductId { get; set; }
 
@@ -24,11 +28,11 @@
 
         public byte[] Image { get; set; }
 
-        //public void CreateMappings(Profile configuration)
-        //{
-        //    configuration.CreateMap<Product, ProductDto>()
-        //        .ForMember(pDTO => pDTO.SupplierCompanyName, opt => opt.MapFrom(p => p.Supplier != null ? p.Supplier.CompanyName : string.Empty))
-        //        .ForMember(pDTO => pDTO.CategoryName, opt => opt.MapFrom(p => p.Category != null ? p.Category.CategoryName : string.Empty));
-        //}
+        public void CreateMappings(Profile configuration)
+        {
+            configuration.CreateMap<Product, ProductDto>()
+                .ForMember(pDTO => pDTO.ProductGroupDescr, opt => opt.MapFrom(p => p.ProductGroup != null ? p.ProductGroup.Descr : string.Empty))
+                .ForMember(pDTO => pDTO.ProductTypeDescr, opt => opt.MapFrom(p => p.ProductType != null ? p.ProductType.Descr : string.Empty));
+        }
     }
 }

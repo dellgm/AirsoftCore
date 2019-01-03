@@ -1,0 +1,122 @@
+﻿@page
+@model AirsoftCore.WebUI.Pages.ShoppingCart.IndexModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    function qntChanged(qntLabelId, unitPriceLabelId, priceLabelId, productId) {
+
+        var uPrice = parseFloat($("#" + unitPriceLabelId).text());
+        var qnt = parseInt($("#" + qntLabelId).val())
+
+        if (qnt > 0) {
+            $("#" + priceLabelId).text(parseFloat(uPrice * qnt).toFixed(2));
+
+            UpdateQnt(productId, qnt);
+        } else {
+            $("#" + qntLabelId).val(1);
+        }
+    };
+
+     function UpdateQnt(productId, newQnt) {
+
+        $.ajax({
+            url: '@Url.Action("UpdateQnt", "ShoppingCart")',
+            type: "POST",
+            data: JSON.stringify({
+                productId: productId,
+                newQnt: newQnt
+            }),
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            async: true,
+            success: function (result) {
+                var newTotal = jQuery.parseJSON(result).total
+
+                $("#lblTotalPrice").text(newTotal.toFixed(2) + ' €');
+            }
+        });
+    };
+
+</script>
+
+<h1>Index</h1>
+<form>
+    <h3 style="margin: 15px">Shopping cart</h3>
+    <div class="container mb-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">Available</th>
+                                <th scope="col" class="text-center">Quantity</th>
+                                <th scope="col" class="text-right">Unit price</th>
+                                <th scope="col" class="text-right">Total price</th>
+                                <th> </th>
+                            </tr>
+                        </thead>
+
+                        @if (Model.ShoppingCart.ShoppingCartItems.Count() > 0)
+                        {
+                            foreach (var cartItem in Model.ShoppingCart.ShoppingCartItems)
+                            {
+                                <tr>
+                                    <td>@cartItem.Descr</td>
+                                    <td>@cartItem.Quantity</td>
+                                    <td><input id="@("txtQnt"+cartItem.ProductId)" class="form-control" type="number" value="@cartItem.Quantity" onchange="qntChanged('txtQnt'+'@cartItem.ProductId','lblUnitPrice' + '@cartItem.ProductId','lblPrice' + '@cartItem.ProductId', @cartItem.ProductId);" /></td>
+                                    <td class="text-right"><label id="@("lblUnitPrice"+cartItem.ProductId)">@cartItem.Price</label></td>
+                                    <td class="text-right"><label id="@("lblPrice"+cartItem.ProductId)" for="txtQnt">@(cartItem.Price * @cartItem.Quantity)</label></td>
+                                    <td class="text-right">
+                                        <a href="@Url.Action("RemoveFromCart", "ShoppingCart", new { id = cartItem.ProductId})" style="color:black">
+                                            <i class="oi oi-delete"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <p>Shopping cart is empty</p>
+                        }
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Shipping</td>
+                            <td class="text-right">6,90 €</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><strong>Total</strong></td>
+                            <td class="text-right"><strong id="lblTotalPrice">@Model.ShoppingCart.TotalPrice €</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col mb-2">
+                <div class="row">
+                    <div class="col-sm-12  col-md-4">
+                        <a class="btn btn-lg btn-block btn-light text-uppercase" asp-area="" asp-page="/Products/Index">Continue Shopping</a>
+                    </div>
+                    <div class="col-sm-12  col-md-4">
+                        <a class="btn btn-lg btn-block btn-light text-uppercase" asp-area="" asp-page="/ShoppingCart/EmptyCart">Clear</a>
+                    </div>
+
+                    <div class="col-sm-12 col-md-4 ">
+                        <a class="btn btn-lg btn-block btn-info text-uppercase" asp-area="" asp-page="/ShoppingCart/Shipping">Checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
