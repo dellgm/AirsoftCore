@@ -62,9 +62,9 @@
                             </tr>
                         </thead>
 
-                        @if (Model.ShoppingCart.ShoppingCartItems.Count() > 0)
+                        @if (Model.ShoppingCartViewModel.ShoppingCartItems.Count() > 0)
                         {
-                            foreach (var cartItem in Model.ShoppingCart.ShoppingCartItems)
+                            foreach (var cartItem in Model.ShoppingCartViewModel.ShoppingCartItems)
                             {
                                 <tr>
                                     <td>@cartItem.Descr</td>
@@ -98,7 +98,7 @@
                             <td></td>
                             <td></td>
                             <td><strong>Total</strong></td>
-                            <td class="text-right"><strong id="lblTotalPrice">@Model.ShoppingCart.TotalPrice €</strong></td>
+                            <td class="text-right"><strong id="lblTotalPrice">@Model.ShoppingCartViewModel.TotalPrice €</strong></td>
                         </tr>
                     </table>
                 </div>

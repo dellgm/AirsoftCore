@@ -134,7 +134,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <a class="" asp-area="" asp-page-handler="AddToCart" asp-route-id="@product.ProductId">@product.Descr</a>
+                                    @Html.ActionLink("ADD TO CART", "AddToCart", "ShoppingCart", new { id = product.ProductId }, new { @class = "btn btn-block btn-outline-dark" })
                                 </div>
                             </div>
                         </div>

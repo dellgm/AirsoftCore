@@ -53,7 +53,7 @@ namespace AirsoftCore.WebUI
 
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(1);
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
@@ -63,6 +63,7 @@ namespace AirsoftCore.WebUI
                             options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
                             options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
                         });
+            services.AddHttpContextAccessor();
 
             services.ConfigureApplicationCookie(options =>
             {
